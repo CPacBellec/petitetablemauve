@@ -11,7 +11,7 @@ include 'dbConnect.php';
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <a href="admin/createAd.php">Créer une annonce</a>
+    <a href="createAd.php">Créer une annonce</a>
     <?php
         foreach ($data['annonces'] as $ad) {
             echo "Title: " . $ad['titre'] . "<br>";
