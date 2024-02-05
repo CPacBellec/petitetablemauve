@@ -1,6 +1,14 @@
 <?php
 // admin.php
-include 'dbConnect.php';
+session_start(); // Démarrez la session au début de votre fichier
+
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['username'])) {
+    // Redirigez l'utilisateur vers la page de connexion s'il n'est pas connecté
+    header("Location: login.php");
+    exit(); // Assurez-vous de terminer le script après la redirection
+}
+include '../dbConnect.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +26,7 @@ include 'dbConnect.php';
             echo "Description: " . $ad['description'] . "<br>";
             echo "Price: " . $ad['prix'] . "<br>";
             echo "<img src='" . $ad['image'] . "'><br>";
+            echo "<a href='showAd.php?id=" . $ad['id'] . "'>Regarder</a>";
             echo "<a href='updateAd.php?id=" . $ad['id'] . "'>Modifier</a>";
             echo "<a href='deleteAd.php?id=" . $ad['id'] . "'>Supprimer</a>";
         }

@@ -1,4 +1,13 @@
 <?php
+session_start(); // Démarrez la session au début de votre fichier
+
+// Vérifiez si l'utilisateur est connecté
+if (!isset($_SESSION['username'])) {
+    // Redirigez l'utilisateur vers la page de connexion s'il n'est pas connecté
+    header("Location: login.php");
+    exit(); // Assurez-vous de terminer le script après la redirection
+}
+include '../dbConnect.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = file_get_contents('config.json');
     $data = json_decode($json, true);
