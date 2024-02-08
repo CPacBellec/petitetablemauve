@@ -20,16 +20,24 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        $title = $row['title'];
+        $title = $row['titre'];
         $description = $row['description'];
+        $price = $row['prix'];
+        $image = $row['image'];
         // Récupérer d'autres champs
 
         
         ?>
         <!-- Afficher les détails de l'annonce -->
         <div>
+            <img src=<?= $image ?> alt="Annonce">
             <h1><?php echo $title; ?></h1>
             <p><?php echo $description; ?></p>
+            <p><?php echo $price; ?></p>
+            <p>Intéressez par l'annonce ? <br></p>
+            <p>Contactez-moi sur : <br> </p>
+            <p>Mon adresse mail : <br></p>
+            <p>Mon numéro de téléphone : </p>
             <!-- Afficher d'autres détails de l'annonce -->
         </div>
         <?php

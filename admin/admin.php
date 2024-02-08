@@ -1,5 +1,7 @@
 <?php
 // admin.php
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 session_start(); // Démarrez la session au début de votre fichier
 
 // Vérifiez si l'utilisateur est connecté
@@ -19,17 +21,28 @@ include '../dbConnect.php';
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-    <a href="createAd.php">Créer une annonce</a>
+    <a href="ad_form.php">Créer une annonce</a>
+    <a href="categories.php">Mes catégories</a>
     <?php
-        foreach ($data['annonces'] as $ad) {
-            echo "Title: " . $ad['titre'] . "<br>";
-            echo "Description: " . $ad['description'] . "<br>";
-            echo "Price: " . $ad['prix'] . "<br>";
-            echo "<img src='" . $ad['image'] . "'><br>";
-            echo "<a href='showAd.php?id=" . $ad['id'] . "'>Regarder</a>";
-            echo "<a href='updateAd.php?id=" . $ad['id'] . "'>Modifier</a>";
-            echo "<a href='deleteAd.php?id=" . $ad['id'] . "'>Supprimer</a>";
-        }
+        // Sélectionner toutes les annonces depuis la base de données
+    $result = mysqli_query($conn, "SELECT * FROM annonces");
+
+    // Afficher les annonces
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<div>";
+        echo "<h3>".$row['nom']."</h3>";
+        echo "<p>".$row['description']."</p>";
+        echo "<p>Prix: ".$row['prix']." €</p>";
+        echo "<p>Catégorie: ".$row['categorie_id']."</p>";
+        echo "<p>Contact: ".$row['contact']."</p>";
+        echo "<img src='".$row['images']."' alt='Annonce Image'>";
+        echo "<a href='edit_ad.php?id=".$row['id']."'>Modifier</a>";
+        echo "<a href='delete_ad.php?id=".$row['id']."'>Supprimer</a>";
+        echo "</div>";
+    }
+
+    // Fermer la connexion
+    mysqli_close($conn);
     ?>
 </body>
 </html>

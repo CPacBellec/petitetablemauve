@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', true);
 session_start(); // Démarrez la session au début de votre fichier
 
 // Vérifiez si l'utilisateur est connecté
@@ -14,11 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $newAd = array(
         'id' => uniqid(),
-        'title' => $_POST['title'],
+        'title' => $_POST['titre'],
         'description' => $_POST['description'],
-        'price' => $_POST['price'],
+        'price' => $_POST['prix'],
         'image' => $_FILES['image']['name']
     );
+
+     // Utilisation de déclarations préparées pour éviter les attaques par injection SQL
+     $stmt = $conn->prepare("INSERT INTO annonces (id, titre, description, prix, image) VALUES (?, ?, ?, ?, ?)");
+     $stmt->bind_param("ssdss", $newAd['id'], $newAd['titre'], $newAd['description'], $newAd['prix'], $newAd['image']);
+     $stmt->execute();
+     $stmt->close();
 
     array_push($data['ads'], $newAd);
     file_put_contents('config.json', json_encode($data));
@@ -28,11 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Création d'annonce - La Petite Table Mauve</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
 
 <form method="post" enctype="multipart/form-data">
-    Title: <input type="text" name="title"><br>
+    Titre: <input type="text" name="title"><br>
     Description: <textarea name="description"></textarea><br>
     Price: <input type="number" name="price"><br>
     Image: <input type="file" name="image"><br>
-    <input type="submit" value="Create Ad">
-</form
+    <input type="submit" value="Créer annonce">
+</form>
